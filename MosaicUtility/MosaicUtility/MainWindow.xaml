@@ -1,0 +1,503 @@
+﻿<Window x:Class="MosaicUtility.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Printing="clr-namespace:System.Drawing.Printing;assembly=System.Drawing"
+        xmlns:local="clr-namespace:MosaicUtility"
+        xmlns:uc="clr-namespace:MosaicUtility.UserControls"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowState="Maximized"
+        Title="Mosaic Print Utility" Height="1280" Width="1920">
+    <Window.Background>
+        <ImageBrush ImageSource="images/back.png" Stretch="UniformToFill"/>
+    </Window.Background>
+    <DockPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Height="40" Background="#FF0C3B6A">
+            <Label Name="lblDate" Content="Date Here" FontFamily="poppins extralight" FontSize="16" Foreground="White" 
+                   HorizontalAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="40"
+                   Margin="10,0"/>
+        </StackPanel>
+
+        <DockPanel>
+
+            <Grid Name="pnlControlBox" Margin="20" DockPanel.Dock="Left" Width="520">
+
+                <Border BorderBrush="#FF0C3B6A" BorderThickness="2"
+                        CornerRadius="21" Background="#99FFFFFF">
+
+                    <Border Background="#FF0C3B6A" Height="55" VerticalAlignment="Top"
+                            CornerRadius="15,15,0,0" BorderBrush="#FF0C3B6A" BorderThickness="2">
+                        <Label Content="- Control Box -" VerticalAlignment="Center" Foreground="White"
+                               FontFamily="Poppins Light" FontSize="20" HorizontalAlignment="Center">
+                            <Label.Effect>
+                                <BlurEffect Radius="2"/>
+                            </Label.Effect>
+                        </Label>
+                    </Border>
+                </Border>
+
+                <StackPanel Margin="10,70,10,90" Orientation="Vertical">
+
+                    <!-- Basic Settings -->
+                    <Border Margin="10" BorderThickness="2" BorderBrush="#FF0080C0">
+                        <StackPanel>
+                            <Border Background="#FF0080C0">
+                                <Grid Margin="10,0">
+                                    <Label Content="Basic Settings" Style="{StaticResource MyLabel}" Foreground="White" />
+                                    <Image Name="imgCollapseBasicSettings" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapseBasicSettings_PreviewMouseDown" />
+                                </Grid>
+                            </Border>
+                            <Grid Name="pnlBasic" Margin="5" Tag="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25*" />
+                                    <ColumnDefinition Width="37*" />
+                                    <ColumnDefinition Width="37*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                
+
+                                <Label Content="Back Image" Grid.Row="1" Style="{StaticResource MyLabel}" />
+                                <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="2">
+                                    <Grid>
+                                        <TextBox Name="txtBackImage" Style="{StaticResource MyTextBox}" TextChanged="txtBackImage_TextChanged" />
+                                        <Button Name="btnChooseBackImage" Content="Choose" HorizontalAlignment="Right" Margin="0,0,5,0" Width="70" Height="20" FontFamily="poppins light" FontSize="10" Click="btnChooseBackImage_Click" />
+                      
+                                    </Grid>
+                                </Border>
+
+                                <Label Content="Overlay" Grid.Row="2" Style="{StaticResource MyLabel}" />
+                                <Border Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="2">
+                                    <Grid>
+                                        <TextBox Name="txtOverlay" Style="{StaticResource MyTextBox}" />
+                                        <Button Name="btnChooseOverlay" Content="Choose" Width="70" Height="20" FontFamily="poppins light" FontSize="10" HorizontalAlignment="Right" Margin="0,0,5,0" Click="btnChooseOverlay_Click" />
+                                    </Grid>
+                                </Border>
+
+                                <!--Frame Size-->
+                                <Label Content="Wall Size" Grid.Row="4" Style="{StaticResource MyLabel}" />
+                                <Grid Grid.Row="4" Grid.Column="1" Margin="2">
+                                    <TextBox Name="txtFrameWidth" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" Tag="Frame Width" TextChanged="txtFrameWidth_TextChanged" LostFocus="txtFrameWidth_LostFocus" GotFocus="TextBox_GotFocus" />
+                                    <Label Content="Width" Margin="5,0" HorizontalAlignment="Left" Style="{StaticResource HintLabel}" />
+                                    <Label Content="inches" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                </Grid>
+                                <Grid Grid.Row="4" Grid.Column="2" Margin="2">
+                                    <TextBox Name="txtFrameHeight" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" Tag="Frame Height" TextChanged="txtFrameHeight_TextChanged" LostFocus="txtFrameHeight_LostFocus" GotFocus="TextBox_GotFocus" />
+                                    <Label Content="Width" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" />
+                                    <Label Content="inches" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                </Grid>
+
+                                <!--Sticker Size-->
+                                <Label Content="Sticker Size" Grid.Row="5" Style="{StaticResource MyLabel}" />
+                                <Grid Grid.Row="5" Grid.Column="1" Margin="2">
+                                    <TextBox Name="txtStickerWidth" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" TextChanged="txtStickerWidth_TextChanged" Tag="Sticker Width" LostFocus="txtStickerWidth_LostFocus" GotFocus="TextBox_GotFocus" />
+                                    <Label Content="Width" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" />
+                                    <Label Content="inches" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                </Grid>
+                                <Grid Grid.Row="5" Grid.Column="2" Margin="2">
+                                    <TextBox Name="txtStickerHeight" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" Tag="Sticker Height" TextChanged="txtStickerHeight_TextChanged" LostFocus="txtStickerHeight_LostFocus" GotFocus="TextBox_GotFocus" />
+                                    <Label Content="Width" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" />
+                                    <Label Content="inches" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                </Grid>
+
+                                <!--No. of Stickers-->
+                                <Label Content="No. of Cells" Grid.Row="6" Style="{StaticResource MyLabel}" />
+                                <Grid Grid.Row="6" Grid.Column="1">
+                                    <TextBox Name="txtStickerCols" HorizontalAlignment="Left" Width="90" HorizontalContentAlignment="Center" Margin="2" Style="{StaticResource MyTextBox}" GotFocus="TextBox_GotFocus" />
+                                    <Label Content="cols" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" />
+                                    <TextBox Name="txtStickerRows" HorizontalAlignment="Right" Width="90" HorizontalContentAlignment="Center" Margin="2" Style="{StaticResource MyTextBox}" GotFocus="TextBox_GotFocus" />
+                                    <Label Content="rows" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                </Grid>
+                                <Label Name="lblTotalCells" Content="0" Grid.Row="6" Grid.Column="2" Style="{StaticResource MyLabel}" />
+
+                                <Label Content="Blending" Grid.Row="7" Style="{StaticResource MyLabel}" Visibility="Collapsed" />
+                                <ComboBox Name="cboBlendMode" Grid.Row="7" Grid.Column="1" Margin="2" FontFamily="Poppins" FontSize="14" SelectionChanged="cboBlendMode_SelectionChanged" Visibility="Collapsed" />
+                                <TextBlock Grid.Row="7" Grid.Column="2" Margin="2" HorizontalAlignment="Right" Visibility="Collapsed">
+                                    <Label Content="Value" Style="{StaticResource MyLabel}" />
+                                    <TextBox Name="txtBlending" Width="100" Height="30" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" GotFocus="TextBox_GotFocus" />
+                                </TextBlock>
+
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="btnPrepareBackImage" Margin="3" Content="Process Back Image" Width="150" Height="30" FontFamily="poppins light" FontSize="12" HorizontalAlignment="Left"
+                                    Click="btnPrepareBackImage_Click" />
+                                <Button Name="btnPrepareOverlay" Margin="3" Content="Process Overlay" Width="150" Height="30" FontFamily="poppins light" FontSize="12" HorizontalAlignment="Left"
+                                    Click="btnPrepareOverlay_Click" />
+                            </StackPanel>
+
+                            <ProgressBar Name="pbSlicer" Height="5" Visibility="Collapsed" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Blending Options -->
+                    <Border Margin="10" BorderThickness="2" BorderBrush="#FF0080C0">
+                        <StackPanel>
+                            <Border Background="#FF0080C0">
+                                <Grid Margin="10,0">
+                                    <Label Content="Blending Options" Style="{StaticResource MyLabel}" Foreground="White" />
+                                    <Image Name="imgCollapseBlendingOptions" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapseBlendingOptions_PreviewMouseDown" />
+                                </Grid>
+                            </Border>
+
+                            <StackPanel Name="pnlBlendingOptions" Tag="1">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="33*" />
+                                        <ColumnDefinition Width="33*" />
+                                        <ColumnDefinition Width="33*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel>
+                                        <Label Content="Blend" Style="{StaticResource MyLabel}" />
+                                        <uc:ucNumericBox x:Name="txtBlend" Number="35" Width="100" HorizontalAlignment="Left" OnValueChanged="txtBlend_OnValueChanged" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <Label Content="Brightness" Style="{StaticResource MyLabel}" />
+                                        <uc:ucNumericBox x:Name="txtBrightness" Number="100" Width="100" HorizontalAlignment="Left" OnValueChanged="txtBrightness_OnValueChanged" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <Label Content="Contrast" Style="{StaticResource MyLabel}" />
+                                        <uc:ucNumericBox x:Name="txtContrast" Number="100" Width="100" HorizontalAlignment="Left" OnValueChanged="txtContrast_OnValueChanged" />
+                                    </StackPanel>
+                                    
+                                </Grid>
+                                
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Directory Watcher -->
+                    <Border Margin="10" BorderThickness="2" BorderBrush="#FF0080C0">
+                        <StackPanel>
+                            <Border Background="#FF0080C0">
+                                <Grid Margin="10,0">
+                                    <CheckBox Name="chkWatcher" Style="{StaticResource MyCheckBox}" Foreground="#FF11216A" />
+                                    <Label Content="Directory Watcher" Style="{StaticResource MyLabel}" Foreground="White" Margin="15,0" />
+                                    <Image Name="imgCollapseDirectoryWatcher" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapseDirectoryWatcher_PreviewMouseDown" />
+                                </Grid>
+                            </Border>
+                            <StackPanel Name="pnlDirectoryWatcher" Margin="10" Tag="1" IsEnabled="{Binding ElementName=chkWatcher, Path=IsChecked}">
+
+                                <Border Grid.Column="1" Margin="2">
+                                    <Grid>
+                                        <TextBox Name="txtSource" Style="{StaticResource MyTextBox}" Height="30" />
+                                        <Button Name="btnChooseSource" Content="Choose" Width="70" Height="20" FontFamily="poppins light" FontSize="10" HorizontalAlignment="Right" Margin="0,0,5,0" Click="btnChooseSource_Click" />
+                                    </Grid>
+                                </Border>
+
+                                <Button Name="btnStartService" Margin="2" Content="Start" Width="120" Grid.Row="3" Grid.ColumnSpan="2" Height="30" HorizontalAlignment="Left" FontFamily="poppins"
+                                        Click="btnStartService_Click"/>
+
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Studio94 Service -->
+                    <Border Margin="10" BorderThickness="2" BorderBrush="#FF0080C0">
+                        <StackPanel>
+                            <Border Background="#FF0080C0">
+                                <Grid Margin="10,0">
+                                    <Label Content="Studio94 Service" Style="{StaticResource MyLabel}" Foreground="White" />
+                                    <Image Name="imgCollapseS94Service" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapseS94Service_PreviewMouseDown" />
+                                </Grid>
+                            </Border>
+                            <StackPanel Name="pnlStudio94Service" Margin="10" Tag="0">
+                                <Border Grid.Column="1" Margin="2">
+                                    <Grid>
+                                        <TextBox Name="txtApiUrl" Text="http://iboothme.com/api/event" Style="{StaticResource MyTextBox}" Height="30" TextChanged="txtApiUrl_TextChanged" Visibility="Collapsed" />
+                                        <Label Name="lblEnterUrlHint" Content="Enter Api URL to download images from" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" Width="250" Visibility="Collapsed" />
+                                        <Button Name="btnTestUrl" Content="Test URL" Width="70" Height="20" FontFamily="poppins light" FontSize="10" HorizontalAlignment="Right" Margin="0,0,5,0" Click="btnTestUrl_Click" Visibility="Collapsed"/>
+                                    </Grid>
+                                </Border>
+
+                                <Border Grid.Column="1" Margin="2">
+                                    <Grid>
+                                        <TextBox Name="txtEventCodes" Style="{StaticResource MyTextBox}" Height="30" TextChanged="txtEventCodes_TextChanged" />
+                                        <Label Name="lblEnterCodesHint" Content="Enter Event Codes Here (comma separated)" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" Width="250" PreviewMouseDown="lblEnterCodesHint_PreviewMouseDown" />
+                                    </Grid>
+                                </Border>
+
+                                <Button Name="btnRunService" Margin="2" Content="Run Service" Width="120" Grid.Row="3" Grid.ColumnSpan="2" Height="30" HorizontalAlignment="Left" FontFamily="poppins"
+                                        Click="btnRunService_Click"/>
+
+                            </StackPanel>
+
+                            <ProgressBar Name="pbDownloader" Height="4" VerticalAlignment="Bottom" Visibility="Collapsed" />
+                        </StackPanel>
+                    </Border>
+
+
+                    <!-- Local Web Server -->
+                    <Border Margin="10" BorderThickness="2" BorderBrush="#FF0080C0">
+                        <StackPanel>
+                            <Border Background="#FF0080C0">
+                                <Grid Margin="10,0">
+                                    <Label Content="Local Server" Style="{StaticResource MyLabel}" Foreground="White" />
+                                    <Image Name="imgCollapseLocalServer" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapseLocalServer_PreviewMouseDown" />
+                                </Grid>
+                            </Border>
+                            <StackPanel Name="pnlLocalServer" Margin="10" Tag="0">
+                                <Border Margin="2">
+                                    <Grid>
+                                        <TextBox Name="txtLocalServePort" Style="{StaticResource MyTextBox}" Height="30" TextChanged="txtApiUrl_TextChanged" />
+                                        <Label Name="lblUrlPort" Content="Enter Server Port" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" Width="250" PreviewMouseDown="lblUrlPort_PreviewMouseDown" />
+                                    </Grid>
+                                </Border>
+
+                                <Border Margin="2">
+                                    <Grid>
+                                        <TextBox Name="txtLocalFolder" Style="{StaticResource MyTextBox}" Height="30" TextChanged="txtApiUrl_TextChanged" />
+                                        <Label Name="lblLocalFolderHint" Content="Select Folder to Save Photos In [optional]" Style="{StaticResource HintLabel}" HorizontalAlignment="Left" Width="250" />
+                                        <Button Name="btnChooseLocalFolder" Content="Choose" Width="70" Height="20" FontFamily="poppins light" FontSize="10" HorizontalAlignment="Right" Margin="0,0,5,0" Click="btnChooseLocalFolder_Click" />
+                                    </Grid>
+                                </Border>
+
+                                <Grid>
+                                    <Button Name="btnRunLocalServer" Margin="2" Content="Start Server" Width="120" Height="30" HorizontalAlignment="Left" FontFamily="poppins"
+                                        Click="btnRunLocalServer_Click"/>
+
+                                    <Label Name="lblServerStatus" HorizontalAlignment="Right" Style="{StaticResource MyLabel}" Foreground="Red" />
+                                </Grid>
+
+                            </StackPanel>
+
+                            <ProgressBar Name="pbDownloaderLocal" Height="4" VerticalAlignment="Bottom" Visibility="Collapsed" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Manual Processing -->
+                    <Border Margin="10" BorderThickness="2" BorderBrush="#FF0080C0">
+                        <StackPanel>
+                            <Border Background="#FF0080C0">
+                                <Grid Margin="10,0">
+                                    <Label Content="Manual Processing" Style="{StaticResource MyLabel}" Foreground="White" />
+                                    <Image Name="imgCollapseManualProcessing" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapseManualProcessing_PreviewMouseDown" />
+                                </Grid>
+                            </Border>
+
+                            <StackPanel Name="pnlManualProcessing" IsEnabled="{Binding ElementName=chkWatcher, Path=!IsChecked}" Tag="1">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25*" />
+                                        <ColumnDefinition Width="75*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Label Content="Source Photos" Style="{StaticResource MyLabel}" />
+                                    <Button Name="btnSelectPhotos" Grid.Column="1" HorizontalAlignment="Left" Content="Select Files" FontFamily="poppins" Width="100" Height="30"
+                                        Click="btnSelectPhotos_Click"/>
+                                    <Label Grid.Column="1" Margin="120,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Name="lblTotalPhotos" Content="0" Style="{StaticResource MyLabel}" Padding="0" />
+                                            <Label Content="photos selected" Style="{StaticResource MyLabel}" Padding="5,0" />
+                                        </StackPanel>
+                                    </Label>
+
+                                    <Label Grid.Row="2" Content="Fill Mode" Style="{StaticResource MyLabel}" />
+                                    <Grid Grid.Row="2" Grid.Column="1">
+                                        <CheckBox Name="chkFillMosaic" Content="Fill Mosaic Wall (Repeat Photos if necessary)" Style="{StaticResource MyCheckBox}"  />
+                                    </Grid>
+
+                                    <Button Name="btnProcessManual" Content="Create Mosaic" Width="120" Grid.Row="3" Grid.ColumnSpan="2" Height="30" HorizontalAlignment="Left" FontFamily="poppins"
+                                        Click="btnProcessManual_Click"/>
+
+                                </Grid>
+                                <ProgressBar Name="pbManual" Height="5" />
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Printing Panel -->
+                    <Border Margin="10" BorderThickness="2" BorderBrush="#FF0080C0">
+                        <StackPanel>
+                            <Border Background="#FF0080C0">
+                                <Grid Margin="10,0">
+                                    <CheckBox Name="chkPrint" Style="{StaticResource MyCheckBox}" Foreground="#FF11216A" />
+                                    <Label Content="Printing Options" Style="{StaticResource MyLabel}" Foreground="White" Margin="15,0" />
+                                    <Image Name="imgCollapsePrintingOptions" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapsePrintingOptions_PreviewMouseDown" />
+                                </Grid>
+                            </Border>
+
+                            <Grid Name="pnlPrint" IsEnabled="{Binding ElementName=chkPrint, Path=IsChecked}" Margin="10" Tag="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="25*" />
+                                    <ColumnDefinition Width="37*" />
+                                    <ColumnDefinition Width="37*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Content="Printer" Style="{StaticResource MyLabel}" />
+                                <ComboBox Name="cboPrinters" ItemsSource="{x:Static Printing:PrinterSettings.InstalledPrinters}" Grid.Column="1" Margin="2" FontFamily="Poppins" FontSize="14" />
+                                <Button Name="btnMakePrinterDefault" Content="Make As Default" Grid.Column="2" Width="120" HorizontalAlignment="Left" Margin="10,0"
+                                        FontFamily="Poppins" FontSize="12"
+                                        Click="btnMakePrinterDefault_Click"/>
+                                <Label Content="No. of Photos" Grid.Row="1" Style="{StaticResource MyLabel}" />
+                                <TextBox Name="txtTotalPhotosPerPrint" Grid.Row="1" Grid.Column="1" Margin="2" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" GotFocus="TextBox_GotFocus" />
+                                <Label Content="Per Print" Grid.Row="1" Grid.Column="2" Style="{StaticResource MyLabel}" />
+
+                                <CheckBox Name="chkImmediatePrint" Content="Print Photos Immediately after the Process" Grid.Row="3" Grid.ColumnSpan="3" Style="{StaticResource MyCheckBox}" />
+                                
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+
+                <!--<Grid VerticalAlignment="Bottom" Margin="20,0,20,30">
+                    <Button Name="btnApplySave" Content="Save n Apply" Width="200" Height="50" HorizontalAlignment="Left" />
+                    <Button Name="btnRemoveJob" Content="Remove Job" Width="200" Height="50" HorizontalAlignment="Right" />
+                </Grid>-->
+
+                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" Margin="20,0,20,30">
+
+                    <Border Name="btnReset" Width="230" Height="60" HorizontalAlignment="Left" Visibility="Collapsed"
+                            CornerRadius="20,0,0,20" Background="White" Cursor="Hand" PreviewMouseDown="btnReset_PreviewMouseDown">
+                        <Label Content="NEW JOB" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               FontFamily="poppins light" FontSize="16" />
+                    </Border>
+
+                    <Border Name="btnExit" Width="480" Height="60" HorizontalAlignment="Left"
+                            CornerRadius="20" Background="White" Cursor="Hand" PreviewMouseDown="btnExit_PreviewMouseDown">
+                        <Label Content="EXIT" Style="{StaticResource MyLabel}" FontSize="18" HorizontalAlignment="Center" />
+
+                    </Border>
+
+                </StackPanel>
+                
+            </Grid>
+
+            <Grid Name="pnlContentHolder" Margin="0,20,20,20">
+
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal" Visibility="Collapsed">
+
+                    <Border Name="btnNewJob" Width="170" Height="60" HorizontalAlignment="Left"
+                            CornerRadius="20,0,0,20" Background="White" Cursor="Hand" PreviewMouseDown="btnNewJob_PreviewMouseDown">
+                        <Label Content="CREATE NEW JOB" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               FontFamily="poppins light" FontSize="16" />
+                    </Border>
+
+                    <Border Name="btnOpenJob" Width="170" Height="60" HorizontalAlignment="Left"
+                            CornerRadius="0,20,20,0" Background="White" Cursor="Hand" Margin="5,0" PreviewMouseDown="btnOpenJob_PreviewMouseDown">
+                        <Label Content="OPEN JOB" HorizontalAlignment="Center" VerticalAlignment="Center"
+                               FontFamily="poppins light" FontSize="16" />
+
+                    </Border>
+
+                </StackPanel>
+
+                <Grid>
+                    <Label Content="Mosaic Printer" FontFamily="poppins extralight" FontSize="40" Foreground="White" />
+                    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Label Name="lblSlideshow" Content="Slideshow" Style="{StaticResource MyLabel}" FontSize="16" Foreground="White" Margin="5" PreviewMouseDown="lblSlideshow_PreviewMouseDown" Cursor="Hand" />
+                        <Label Name="lblScreenshow" Content="Screen" Style="{StaticResource MyLabel}" FontSize="16" Foreground="White" Margin="10,5" PreviewMouseDown="lblScreenshow_PreviewMouseDown" Cursor="Hand" />
+                    </StackPanel>
+                </Grid>
+
+                <Border Margin="0,70,0,0" Background="White" Opacity="0.8" CornerRadius="20" BorderBrush="#FF0C3B6A" BorderThickness="2">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Bottom" Margin="20" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <Label Content="Wall Size : " Style="{StaticResource MyLabel}" />
+                            <Label Name="lblFrameSize" Content="" Style="{StaticResource MyLabel}" />
+                            <Label Content="in" Style="{StaticResource MyLabel}" />
+
+                            <Label Content="Image Resolution : " Margin="50,0,0,0" Style="{StaticResource MyLabel}" />
+                            <Label Name="lblResolution" Content="" Style="{StaticResource MyLabel}" />
+                            <Label Content="px" Style="{StaticResource MyLabel}" />
+
+                        </StackPanel>
+
+                        <Viewbox Margin="30,30,30,70">
+                            <Grid Name="pnlMain">
+                                <Image Name="imgFrame" Stretch="UniformToFill" />
+                                <Image Name="imgOverlay" Stretch="UniformToFill" Visibility="Collapsed" />
+                                <Border Name="frameBorder" HorizontalAlignment="Center" VerticalAlignment="Center" BorderThickness="2" BorderBrush="Indigo" Visibility="Collapsed" />
+                                <Grid Name="gridStickers" ShowGridLines="True" Visibility="Collapsed" />
+                            </Grid>
+                        </Viewbox>
+
+                        <Border Width="340" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,20,0" Background="Beige" BorderBrush="Black" BorderThickness="1,0,1,1" CornerRadius="0,0,10,10">
+                            <StackPanel>
+                                <Border Background="#FF0080C0" CornerRadius="0,0,10,10">
+                                    <Grid Margin="10,0">
+                                        <Label Content="Projection Options" Style="{StaticResource MyLabel}" Foreground="White" />
+                                        <Image Name="imgCollapseProjection" Cursor="Hand" Width="20" HorizontalAlignment="Right" VerticalAlignment="Center" Source="images/minimize.png" PreviewMouseDown="imgCollapseProjection_PreviewMouseDown" />
+                                    </Grid>
+                                </Border>
+                                
+                                <StackPanel Name="pnlProjection" Visibility="Visible">
+                                    <Label Content="Image Size :" Style="{StaticResource MyLabel}" FontSize="15" VerticalAlignment="Center" Margin="10"/>
+                                    <StackPanel Orientation="Horizontal" Margin="10,0">
+                                        <Grid Width="150">
+                                            <TextBox Name="txtScreenWidth" Padding="40,0" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" Tag="Frame Width" TextChanged="txtScreenWidth_TextChanged" />
+                                            <Label Content="Width" Margin="5,0" HorizontalAlignment="Left" Style="{StaticResource HintLabel}" />
+                                            <Label Content="px" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                        </Grid>
+
+                                        <Grid Width="150" Margin=" 10,0">
+                                            <TextBox Name="txtScreenHeight" Padding="40,0" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" Tag="Frame Width" TextChanged="txtScreenHeight_TextChanged" />
+                                            <Label Content="Height" Margin="5,0" HorizontalAlignment="Left" Style="{StaticResource HintLabel}" />
+                                            <Label Content="px" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <Label Content="Slice Size : " Style="{StaticResource MyLabel}" Margin="10,20,10,10" FontSize="15" />
+                                    <StackPanel Orientation="Horizontal" Margin="10,0">
+                                        <Grid Width="150">
+                                            <TextBox Name="txtSliceWidth" Padding="40,0" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" Tag="Frame Width" TextChanged="txtSliceWidth_TextChanged" />
+                                            <Label Content="Width" Margin="5,0" HorizontalAlignment="Left" Style="{StaticResource HintLabel}" />
+                                            <Label Content="px" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                        </Grid>
+
+                                        <Grid Width="150" Margin=" 10,0">
+                                            <TextBox Name="txtSliceHeight" Padding="40,0" HorizontalContentAlignment="Center" Style="{StaticResource MyTextBox}" Tag="Frame Width" TextChanged="txtSliceHeight_TextChanged" />
+                                            <Label Content="Height" Margin="5,0" HorizontalAlignment="Left" Style="{StaticResource HintLabel}" />
+                                            <Label Content="px" Margin="5,0" Style="{StaticResource HintLabel}" HorizontalAlignment="Right" HorizontalContentAlignment="Right" />
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <Label Name="lblTotalSlices" Content="0 cells" Style="{StaticResource MyLabel}" Margin="10,0" />
+                                    <Button Name="btnProject" Content="Project to Another Screen" Margin="40,20" Click="btnProject_Click"
+                                    Height="50" FontFamily="Poppins" FontSize="16"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DockPanel>
+    </DockPanel>
+</Window>

@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="MosaicUtility.UserControls.ucNumericBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MosaicUtility.UserControls"
+             mc:Ignorable="d"
+             d:DesignHeight="30" d:DesignWidth="300">
+    <Border BorderThickness="1" BorderBrush="#FF0080C0">
+        <Grid>
+            <TextBox Name="txtNumber" HorizontalContentAlignment="Center" Text="1" VerticalContentAlignment="Center" 
+                 FontFamily="Poppins" FontSize="14" BorderBrush="Transparent" />
+
+            <Button Name="btnDown" Background="#FF0080C0" Foreground="White" FontFamily="Poppins" FontSize="16" Content="-" Width="30" HorizontalAlignment="Left" BorderBrush="Transparent" Click="btnDown_Click" />
+            <Button Name="btnUp" Background="#FF0080C0" Foreground="White" FontFamily="Poppins" FontSize="16" Content="+" Width="30" HorizontalAlignment="Right" BorderBrush="Transparent" Click="btnUp_Click" />
+        </Grid>
+    </Border>
+</UserControl>
